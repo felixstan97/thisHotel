@@ -2,8 +2,12 @@ package com.thishotel.model;
 
 import com.thishotel.enums.BedType;
 import com.thishotel.enums.RoomStatus;
+import com.thishotel.enums.RoomType;
 import com.thishotel.enums.RoomView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,20 +23,29 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String roomType;  // (singola, doppia, tripla)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private RoomType roomType;  // Enum per il tipo di stanza (SINGLE, DOUBLE, TRIPLE, ecc.)
 
-    private int maxOccupancy; // Numero massimo di persone
-
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = BedType.class)
+    @CollectionTable(name = "room_beds", joinColumns = @JoinColumn(name = "room_id"))
+    @Column(name = "bed_type")
     private List<BedType> bedTypes; // (ad esempio, [SINGLE] per una singola, [MATRIMONIAL, SINGLE] per una tripla)
 
+    @NotNull
+    @Positive
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
-    private Boolean isDisabledFriendly; // Accessibilità per disabili
+    private Boolean isDisabledFriendly = false; // Accessibilità per disabili
 
+    @NotNull
+    @Min(0)
     private int floor;
 
-    private Boolean isSuite;
+    private Boolean isSuite = false;
 
     @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus; // Stato della stanza (AVAILABLE, OCCUPIED, CLEANING, UNDER_MAINTENANCE, TO_CLEAN)
@@ -40,9 +53,9 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomView roomView; // Tipo di vista (SEA, MOUNTAIN, LAKE, CITY, GARDEN, NO_VIEW)
 
-    private Boolean hasBalcony;
+    private Boolean hasBalcony = false;
 
-    private Boolean hasTerrace;
+    private Boolean hasTerrace = false;
 
 
     // Getter e Setter
@@ -51,20 +64,12 @@ public class Room {
         return id;
     }
 
-    public String getRoomType() {
+    public RoomType getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(String roomType) {
+    public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
-    }
-
-    public int getMaxOccupancy() {
-        return maxOccupancy;
-    }
-
-    public void setMaxOccupancy(int maxOccupancy) {
-        this.maxOccupancy = maxOccupancy;
     }
 
     public List<BedType> getBedTypes() {
@@ -136,6 +141,11 @@ public class Room {
 
     public void setHasTerrace(Boolean hasTerrace) {
         this.hasTerrace = hasTerrace;
+    }
+
+    // Metodo per ottenere il numero massimo di persone consentite per la stanza
+    public int calculateMaxOccupancy() {
+        return roomType.getMaxOccupancy();
     }
 
 //    metodo da implementare nel service ma segnato qui per tenere traccia

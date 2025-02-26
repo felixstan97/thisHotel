@@ -11,14 +11,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)                                       // Usando una sola tabella per tutte le entità
-@DiscriminatorColumn(name = "user_table", discriminatorType = DiscriminatorType.STRING)     // Colonna per distinguere i tipi
 @Table(name = "users")
-public abstract class User {
+public class User_class {
 
-//    VARIABLES
+
+//  VARIABILI
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,10 +55,14 @@ public abstract class User {
     private LocalDateTime deletedAt;
 
 
-//    GETTER E SETTER
+//  GETTER E SETTER
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -100,7 +102,7 @@ public abstract class User {
     }
 
 
-    // DELETE SECTION
+//  DELETE SECTION
 
     public boolean isDeleted(){
         return deletedAt != null;
@@ -117,5 +119,6 @@ public abstract class User {
             this.deletedAt = null;
         }
     }
+
 
 }

@@ -1,3 +1,22 @@
+Progetto backend Spring Boot
+Gestionale Hotel
+
+Tecnologie attualmente utilizzate:
+- Spring Boot
+- PostgreSQL
+- Maven
+
+
+
+
+
+
+
+
+
+
+
+
 comandi postgres:
 -----------
 per attivare/spegnere il server postgres (17 e la versione) ps. come admin

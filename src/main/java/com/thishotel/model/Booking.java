@@ -21,7 +21,7 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User_class user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
@@ -54,11 +54,11 @@ public class Booking {
         this.id = id;
     }
 
-    public User getUser() {
+    public User_class getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(User_class user) {
         this.user = user;
     }
 
