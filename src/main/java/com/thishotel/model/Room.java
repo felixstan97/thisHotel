@@ -17,7 +17,7 @@ import java.util.List;
 public class Room {
 
 
-//  VARIABILI
+//    VARIABLES
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +58,7 @@ public class Room {
     private Boolean hasTerrace = false;
 
 
-    // Getter e Setter
+//    GETTER SETTER
 
     public Long getId() {
         return id;

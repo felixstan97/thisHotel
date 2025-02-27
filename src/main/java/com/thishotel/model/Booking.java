@@ -1,11 +1,13 @@
 package com.thishotel.model;
 
+import com.thishotel.enums.BookingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Entity
@@ -19,9 +21,26 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    TODO -> Da rivedere il concetto di USER dato che user e stato modificato, dovrebbe essere "Client" invece di User (?)
+//    todo -> anche il concetto di isActive o comunque uno stato del booking, non ancora, in_progress, complete ( e quindi se ha senso qui mettere anche lo status DELETED (?))
+//    todo -> rifare la logica della cancellazione del booking, il metodo da chiamare per cancellare il booking [manager]
+//    todo -> trovare se possibile uniformita tra LOCALDATE e LOCALDATETIME
+/*todo:-v
+
+    // assicurarsi che nella fase di creazione il valore isActive, sia true
+    @PrePersist
+    protected void onCreate(){
+        this.isActive = true;
+    }
+
+* */
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus bookingStatus = BookingStatus.PENDING;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User_class user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
@@ -35,10 +54,8 @@ public class Booking {
     @Future(message = "The end date must be in the future")
     private LocalDate checkOutDate;
 
-    private LocalDate cancelledAt;
+    private LocalDateTime cancellationDate;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
 
     @Column(length = 700)
     private String notes;
@@ -54,11 +71,11 @@ public class Booking {
         this.id = id;
     }
 
-    public User_class getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User_class user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -86,8 +103,8 @@ public class Booking {
         this.checkOutDate = checkOutDate;
     }
 
-    public LocalDate getCancelledAt() {
-        return cancelledAt;
+    public LocalDateTime getCancelledAt() {
+        return cancellationDate;
     }
 
     public String getNotes() {
@@ -99,30 +116,26 @@ public class Booking {
     }
 
 
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+
 //  OTHERS METHODS
 
-    // assicurarsi che nella fase di creazione il valore isActive, sia true
-    @PrePersist
-    protected void onCreate(){
-        this.isActive = true;
-    }
-
-    public void cancelBooking(){
-        if(!this.isActive){
-            throw new IllegalArgumentException("The booking is already cancelled");
-        }
-        this.isActive = false;
-        this.cancelledAt = LocalDate.now();
-    }
-
-    // return true if booking status is active (not cancelled)
-    public boolean isActive(){
-        return this.isActive;
+    // Metodo per annullare la prenotazione
+    public void cancelBooking() {
+        this.bookingStatus = BookingStatus.CANCELLED;
+        this.cancellationDate = LocalDateTime.now();
     }
 
     // make a date validation
     public boolean isValid(){
-        return isActive && checkInDate != null && checkOutDate != null && checkOutDate.isAfter(checkInDate);
+        return checkInDate != null && checkOutDate != null && checkOutDate.isAfter(checkInDate);
     }
 
     public long getBookingDuration(){

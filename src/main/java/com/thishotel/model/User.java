@@ -1,6 +1,5 @@
 package com.thishotel.model;
 
-import com.thishotel.security.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +16,7 @@ import java.time.LocalDateTime;
 @DiscriminatorColumn(name = "user_table", discriminatorType = DiscriminatorType.STRING)     // Colonna per distinguere i tipi
 @Table(name = "users")
 public abstract class User {
+
 
 //    VARIABLES
 
@@ -41,11 +41,6 @@ public abstract class User {
     @Email(message = "The E-Mail is not valid")
     private String email;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -57,7 +52,7 @@ public abstract class User {
     private LocalDateTime deletedAt;
 
 
-//    GETTER E SETTER
+//    GETTER SETTER
 
     public Long getId() {
         return id;
@@ -87,20 +82,12 @@ public abstract class User {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public LocalDateTime getDeletedAt(){
         return deletedAt;
     }
 
 
-    // DELETE SECTION
+//    DELETE SECTION
 
     public boolean isDeleted(){
         return deletedAt != null;
