@@ -18,9 +18,6 @@ public class Cleaner extends User {
     @OneToMany(mappedBy = "handledBy")
     private List<UrgencyRequest> handledUrgencies;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
-
 
 //    GETTER SETTER
     public String getCleaningArea() {
@@ -39,11 +36,4 @@ public class Cleaner extends User {
         this.handledUrgencies = handledUrgencies;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

@@ -13,10 +13,6 @@ public class Client extends User{
 
     private String loyaltyCardCode;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
-
-
 //    GETTER SETTER
 
     public String getLoyaltyCardCode() {
@@ -27,11 +23,4 @@ public class Client extends User{
         this.loyaltyCardCode = loyaltyCardCode;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

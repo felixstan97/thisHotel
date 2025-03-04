@@ -1,44 +1,141 @@
 package com.thishotel.config;
 
+import com.thishotel.security.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private final JwtFilter jwtFilter;
+
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(JwtFilter jwtFilter, UserDetailsService userDetailsService) {
+        this.jwtFilter = jwtFilter;
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Disabilita CSRF (solo per test, non in produzione!)
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/test/**").permitAll()  // Permetti l'accesso agli endpoint di test
+                        .requestMatchers("/api/auth/**", "/api/rooms", "/test/**").permitAll() // API pubbliche
+                        .requestMatchers(HttpMethod.POST,"/api/admin/register").permitAll()  // Permetti la registrazione dell'admin
+                        .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER")
+                        .requestMatchers("/api/reports/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN") // Solo gli admin possono gestire utenti
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.disable()) // Disabilita il form di login
-                .httpBasic(basic -> basic.disable()); // Disabilita l'autenticazione HTTP Basic
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable());
+
+//         Aggiunta del filtro JWT prima dell'UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+}
 
 
-//     TODO:-> da vedere in futuro la parte dei path e auth
+
+
+
+//BACK UPS
+
+
+/**  todo --> versione da usare da sola per escludere il discorso dei TOKEN
+ *
+ *  @Bean
+ *     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ *         http
+ *                 .csrf(csrf -> csrf.disable())
+ *                 .authorizeHttpRequests(auth -> auth
+ *                         .requestMatchers("/api/auth/**", "/api/rooms").permitAll() // API pubbliche
+ *                         .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
+ *                         .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")
+ *                         .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER")
+ *                         .requestMatchers("/api/reports/**").hasAnyRole("MANAGER", "ADMIN")
+ *                         .requestMatchers("/api/users/**").hasRole("ADMIN") // Solo gli admin possono gestire utenti
+ *                         .anyRequest().authenticated()
+ *                 )
+ *                 .formLogin(form -> form.disable())
+ *                 .httpBasic(basic -> basic.disable());
+ *
+ *         return http.build();
+ *     }
+ */
+
+
+
+
+//  S TODO --> SALVAVITA utile nel caso il routing non vada bene.
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        http
-//                .antMatchers("/api/test/status").permitAll()  // API pubblica
-//                .antMatchers("/api/bookings/**").authenticated()  // API per utenti autenticati
-//                .antMatchers("/api/rooms/**").hasRole("EMPLOYEE")  // Solo dipendenti possono aggiungere camere
-//                .antMatchers("/api/admin/**").hasRole("ADMIN")  // Solo admin possono accedere
-//                .anyRequest().authenticated()  // Tutti gli altri endpoint richiedono l'autenticazione
-//                .and()
-//                .formLogin()  // Login con form
-//                .and()
-//                .httpBasic();  // Può essere utile per test (autenticazione via header)
+//                .csrf(csrf -> csrf.disable())  // Disabilita CSRF (solo per test, non in produzione!)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/test/**").permitAll()  // Permetti l'accesso agli endpoint di test
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form.disable()) // Disabilita il form di login
+//                .httpBasic(basic -> basic.disable()); // Disabilita l'autenticazione HTTP Basic
 //
 //        return http.build();
 //    }
-}
+
+//     TODO:-> da vedere in futuro la parte dei path e auth
+    //***************************************************
+    /**
+     *    @Bean
+     *     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+     *         http
+     *             .csrf(csrf -> csrf.disable())
+     *             .authorizeHttpRequests(auth -> auth
+     *                 .requestMatchers("/api/auth/**", "/api/rooms").permitAll() // API pubbliche
+     *                 .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
+     *                 .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")
+     *                 .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER")
+     *                 .requestMatchers("/api/reports/**").hasAnyRole("MANAGER", "ADMIN")
+     *                 .requestMatchers("/api/users/**").hasRole("ADMIN") // Solo gli admin possono gestire utenti
+     *                 .anyRequest().authenticated()
+     *             )
+     *             .formLogin(form -> form.disable())
+     *             .httpBasic(basic -> basic.disable());
+     *
+     *         return http.build();
+     *     }
+     */
+
+    //***************************************************
+
+

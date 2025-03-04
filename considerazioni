@@ -1,0 +1,19 @@
+cose da tenere in considerazione per un implementazione futura
+
+1) gestire lo scenario: il cliente prenota da solo sul portale (la prenotazione passa in pending) dopo di che decide anche di pagare (passa in confermed)
+    [se paga in anticipo puo riservarsi una camera in particolare, con caratteristiche desiderate]
+    dopo di che il cliente vuole annullare la prenotazione, ma dato che ha gia pagato, bisogna fare un form, compilare un form,
+    quindi creare una classe dedicata alla richiesta di rimborso.
+
+ ! implementare la possibilita del cliente di registrarsi da solo ed effettuare il booking in autonomia [pending e poi confermed]
+
+
+2) un altra cosa da implementare sono le richieste da far gestire al MANAGER. il cliente non si presenta, il receptionist manda una richiesta di intervento al manager
+    il quale dopo che controlla la situazione, se effettivamente non si sono presentati, mette il booking in STATUS = NO_SHOW.
+
+
+
+
+3 scenari:
+ 1 il cliente arriva in hotel, lascia i documenti e il receptionist crea la prenotazione
+

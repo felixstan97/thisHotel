@@ -21,26 +21,12 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    TODO -> Da rivedere il concetto di USER dato che user e stato modificato, dovrebbe essere "Client" invece di User (?)
-//    todo -> anche il concetto di isActive o comunque uno stato del booking, non ancora, in_progress, complete ( e quindi se ha senso qui mettere anche lo status DELETED (?))
-//    todo -> rifare la logica della cancellazione del booking, il metodo da chiamare per cancellare il booking [manager]
-//    todo -> trovare se possibile uniformita tra LOCALDATE e LOCALDATETIME
-/*todo:-v
-
-    // assicurarsi che nella fase di creazione il valore isActive, sia true
-    @PrePersist
-    protected void onCreate(){
-        this.isActive = true;
-    }
-
-* */
-
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.PENDING;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
@@ -56,6 +42,7 @@ public class Booking {
 
     private LocalDateTime cancellationDate;
 
+    private boolean isPaid; //used for custom booking
 
     @Column(length = 700)
     private String notes;
@@ -71,12 +58,12 @@ public class Booking {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Room getRoom() {
@@ -103,8 +90,20 @@ public class Booking {
         this.checkOutDate = checkOutDate;
     }
 
-    public LocalDateTime getCancelledAt() {
+    public LocalDateTime getCancellationDate() {
         return cancellationDate;
+    }
+
+    public void setCancellationDate(LocalDateTime cancellationDate) {
+        this.cancellationDate = cancellationDate;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
     public String getNotes() {
@@ -157,3 +156,9 @@ public class Booking {
 
 
 }
+
+
+//    TODO -> Da rivedere il concetto di USER dato che user e stato modificato, dovrebbe essere "Client" invece di User (?)
+//     -> anche il concetto di isActive o comunque uno stato del booking, non ancora, in_progress, complete ( e quindi se ha senso qui mettere anche lo status DELETED (?))
+//     -> rifare la logica della cancellazione del booking, il metodo da chiamare per cancellare il booking [manager]
+//    todo -> trovare se possibile uniformita tra LOCALDATE e LOCALDATETIME
