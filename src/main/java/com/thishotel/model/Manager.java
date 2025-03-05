@@ -9,19 +9,5 @@ import jakarta.persistence.Entity;
 public class Manager extends User{
 
 
-//    VARIABLES
 
-    @Column(nullable = false)
-    private boolean isActive = true;
-
-
-//    GETTER SETTER
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

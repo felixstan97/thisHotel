@@ -13,9 +13,11 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "123456789qwertyuioplkjhgfdsazxcvb";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
-    private static final long EXPIRATION_TIME = 86400000;
+    @Value("${jwt.expiration}")
+    private long EXPIRATION_TIME;
 
 
     public String generateToken(String email){

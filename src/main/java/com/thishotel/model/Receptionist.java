@@ -15,9 +15,6 @@ public class Receptionist extends User {
     @Enumerated(EnumType.STRING)
     private Shift shift;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
-
 
 //  GETTER SETTER
     public Shift getShift() {
@@ -28,11 +25,4 @@ public class Receptionist extends User {
         this.shift = shift;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

@@ -24,7 +24,7 @@ public class AdminController {
     private ManagerService managerService;
 
     private final JwtUtil jwtUtil;
-    @Autowired
+
     public AdminController(AdminService adminService,
                            ManagerService managerService,
                            JwtUtil jwtUtil){

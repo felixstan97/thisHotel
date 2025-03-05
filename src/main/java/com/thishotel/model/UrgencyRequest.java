@@ -39,7 +39,6 @@ public class UrgencyRequest {
     @Column
     private LocalDateTime createdAt;
 
-    @CreationTimestamp
     @Column
     private LocalDateTime resolvedAt;
 
