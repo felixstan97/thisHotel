@@ -1,11 +1,17 @@
 package com.thishotel.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("CLEANER")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Cleaner extends User {
 
 
@@ -17,23 +23,5 @@ public class Cleaner extends User {
 
     @OneToMany(mappedBy = "handledBy")
     private List<UrgencyRequest> handledUrgencies;
-
-
-//    GETTER SETTER
-    public String getCleaningArea() {
-        return cleaningArea;
-    }
-
-    public void setCleaningArea(String cleaningArea) {
-        this.cleaningArea = cleaningArea;
-    }
-
-    public List<UrgencyRequest> getHandledUrgencies() {
-        return handledUrgencies;
-    }
-
-    public void setHandledUrgencies(List<UrgencyRequest> handledUrgencies) {
-        this.handledUrgencies = handledUrgencies;
-    }
 
 }

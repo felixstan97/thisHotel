@@ -1,6 +1,7 @@
 package com.thishotel.service;
 
 import com.thishotel.dto.RegisterRequestDTO;
+import com.thishotel.mapper.UserMapper;
 import com.thishotel.model.Admin;
 import com.thishotel.repository.AdminRepository;
 import com.thishotel.util.PasswordUtil;
@@ -16,10 +17,12 @@ import java.time.LocalDateTime;
 public class AdminService {
 
     private AdminRepository adminRepository;
+    private UserMapper userMapper;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository){
+    public AdminService(AdminRepository adminRepository, UserMapper userMapper){
         this.adminRepository = adminRepository;
+        this.userMapper = userMapper;
     }
 
     @Transactional
@@ -29,16 +32,7 @@ public class AdminService {
             throw new RuntimeException("Admin already exists in the system");
         }
 
-        Admin newAdmin = new Admin();
-        newAdmin.setFirstName(registerRequestDTO.getFirstName());
-        newAdmin.setLastName(registerRequestDTO.getLastName());
-        newAdmin.setPhoneNumber(registerRequestDTO.getPhoneNumber());
-        newAdmin.setDateOfBirth(registerRequestDTO.getDateOfBirth());
-        newAdmin.setEmail(registerRequestDTO.getEmail());
-        newAdmin.setPassword(PasswordUtil.encodePassword(registerRequestDTO.getPassword()));
-        newAdmin.setCreatedAt(LocalDateTime.now());
-        newAdmin.setUpdatedAt(LocalDateTime.now());
-        newAdmin.setActive(true);
+        Admin newAdmin = userMapper.toAdmin(registerRequestDTO);
         return adminRepository.save(newAdmin);
     }
 

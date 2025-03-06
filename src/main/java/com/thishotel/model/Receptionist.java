@@ -3,9 +3,15 @@ package com.thishotel.model;
 import com.thishotel.enums.Shift;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @DiscriminatorValue("RECEPTIONIST")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Receptionist extends User {
 
 
@@ -15,14 +21,5 @@ public class Receptionist extends User {
     @Enumerated(EnumType.STRING)
     private Shift shift;
 
-
-//  GETTER SETTER
-    public Shift getShift() {
-        return shift;
-    }
-
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
 
 }

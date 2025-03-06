@@ -8,12 +8,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "rooms")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Room {
 
 
@@ -21,6 +27,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
     @NotNull
@@ -58,97 +65,9 @@ public class Room {
     private Boolean hasTerrace = false;
 
 
-//    GETTER SETTER
-
-    public Long getId() {
-        return id;
-    }
-
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
-    }
-
-    public List<BedType> getBedTypes() {
-        return bedTypes;
-    }
-
-    public void setBedTypes(List<BedType> bedTypes) {
-        this.bedTypes = bedTypes;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Boolean getIsDisabledFriendly() {
-        return isDisabledFriendly;
-    }
-
-    public void setIsDisabledFriendly(Boolean isDisabledFriendly) {
-        this.isDisabledFriendly = isDisabledFriendly;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
-
-    public Boolean getIsSuite() {
-        return isSuite;
-    }
-
-    public void setIsSuite(Boolean isSuite) {
-        this.isSuite = isSuite;
-    }
-
-    public RoomStatus getRoomStatus() {
-        return roomStatus;
-    }
-
-    public void setRoomStatus(RoomStatus roomStatus) {
-        this.roomStatus = roomStatus;
-    }
-
-    public RoomView getRoomView() {
-        return roomView;
-    }
-
-    public void setRoomView(RoomView roomView) {
-        this.roomView = roomView;
-    }
-    public Boolean getHasBalcony() {
-        return hasBalcony;
-    }
-
-    public void setHasBalcony(Boolean hasBalcony) {
-        this.hasBalcony = hasBalcony;
-    }
-
-    public Boolean getHasTerrace() {
-        return hasTerrace;
-    }
-
-    public void setHasTerrace(Boolean hasTerrace) {
-        this.hasTerrace = hasTerrace;
-    }
-
     // Metodo per ottenere il numero massimo di persone consentite per la stanza
     public int calculateMaxOccupancy() {
         return roomType.getMaxOccupancy();
     }
-
-//    metodo da implementare nel service ma segnato qui per tenere traccia
-//    isBookedDuring() -> per capire se ci sono gia prenotazioni per quella determinata stanza in un determinato periodo
 
 }
