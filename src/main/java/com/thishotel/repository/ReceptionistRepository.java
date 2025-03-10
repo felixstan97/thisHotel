@@ -1,13 +1,12 @@
 package com.thishotel.repository;
 
-import com.thishotel.model.Admin;
+import com.thishotel.model.Receptionist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
-    Optional<Admin> findByEmail(String email);
-
+public interface ReceptionistRepository extends JpaRepository<Receptionist, Long> {
+    Optional<Receptionist> findByEmail(String email);
 }

@@ -1,8 +1,8 @@
 package com.thishotel.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import com.thishotel.enums.Shift;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Manager extends User{
 
-
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Shift shift = Shift.TO_BE_ASSIGNED;
 
 }

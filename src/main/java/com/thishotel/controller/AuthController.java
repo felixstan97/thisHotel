@@ -1,66 +1,46 @@
 package com.thishotel.controller;
 
-import com.thishotel.dto.LoginRequestDTO;
-import com.thishotel.security.CustomUserDetailsService;
-import com.thishotel.security.JwtUtil;
-import com.thishotel.util.PasswordUtil;
+import com.thishotel.dto.request.LoginRequestDTO;
+import com.thishotel.dto.request.ResetPasswordRequestDTO;
+import com.thishotel.dto.request.ResetPasswordRequestEmailDTO;
+import com.thishotel.dto.response.ApiResponseDTO;
+import com.thishotel.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final CustomUserDetailsService userDetailsService;
-    private final JwtUtil jwtUtil;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
 
     @Autowired
-    public AuthController(
-            AuthenticationManager authenticationManager,
-            CustomUserDetailsService userDetailsService,
-            JwtUtil jwtUtil,
-            PasswordEncoder passwordEncoder) {
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-        this.passwordEncoder = passwordEncoder;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> createToken(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<ApiResponseDTO<String>> createToken(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+        String token = authService.login(loginRequestDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>(token));
+    }
 
-        try {
-            // Autenticazione dell'utente con email e password
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
+    @PostMapping("/reset-password-request")
+    public ResponseEntity<ApiResponseDTO<String>> requestPasswordReset(@RequestBody ResetPasswordRequestEmailDTO emailDTO) {
+        String result = authService.requestPasswordReset(emailDTO.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>(result));
+    }
 
-            authenticationManager.authenticate(authenticationToken);
-
-            // Otteniamo i dettagli dell'utente (email) dal database
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
-
-
-            // Generiamo il token JWT
-            String jwt = jwtUtil.generateToken(userDetails.getUsername());
-
-            return ResponseEntity.ok(jwt);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
-
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponseDTO<String>> resetPassword(
+            @Valid @RequestBody ResetPasswordRequestDTO dto,
+            @RequestHeader(value = "X-Reset-Token", required = false) String token) {
+        authService.resetPassword(dto, token);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>("Password reset successful"));
     }
 
 

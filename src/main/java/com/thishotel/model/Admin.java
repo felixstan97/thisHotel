@@ -12,8 +12,4 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Admin extends User {
-
-//    TODO : da capire come implementare e cosa -> puo creare le utenze, gestire le utenze, creare utenze, ruoli etc. (receptionist, cleaner, etc)
-
-
 }

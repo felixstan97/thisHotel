@@ -58,22 +58,3 @@ public class JwtUtil {
         return (extractEmail(token).equals(email) && !isTokenExpired(token));
     }
 }
-
-
-
-/**
- *
- private static final String SECRET_KEY = "12";
-
- private static final long EXPIRATION_TIME = 86400000;
-
-
- public String generateToken(String email){
- return Jwts.builder()
- .setSubject(email)
- .setIssuedAt(new Date())
- .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
- .signWith(SignatureAlgorithm.ES256, SECRET_KEY)
- .compact();
- }
- */

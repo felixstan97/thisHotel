@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/rooms", "/test/**").permitAll() // API pubbliche
+                        .requestMatchers("/api/auth/**", "/api/rooms").permitAll() // API pubbliche
                         .requestMatchers(HttpMethod.POST,"/api/admin/register").permitAll()  // Permetti la registrazione dell'admin
                         .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
                         .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")

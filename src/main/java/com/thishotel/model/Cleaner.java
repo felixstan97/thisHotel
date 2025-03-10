@@ -1,6 +1,8 @@
 package com.thishotel.model;
 
+import com.thishotel.enums.Shift;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,10 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Cleaner extends User {
 
-
-//    VARIABLES
-//    todo -> da capire se ha senso metterlo anche agli altri utenti un "badge" o un codice identificativo
-    private String individualBadgeCode;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Shift shift = Shift.TO_BE_ASSIGNED;
 
     private String cleaningArea;
 
@@ -25,3 +26,7 @@ public class Cleaner extends User {
     private List<UrgencyRequest> handledUrgencies;
 
 }
+
+
+//    todo -> da capire se ha senso metterlo anche agli altri utenti un "badge" o un codice identificativo
+//    private String individualBadgeCode;

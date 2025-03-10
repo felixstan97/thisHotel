@@ -14,9 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Client extends User{
 
-
-//    VARIABLES
-
     private String loyaltyCardCode;
 
 }

@@ -14,12 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Receptionist extends User {
 
-
-//    VARIABLES
-
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Shift shift;
-
+    private Shift shift = Shift.TO_BE_ASSIGNED;
 
 }

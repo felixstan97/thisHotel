@@ -18,9 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UrgencyRequest {
 
-
-//    VARIABLES
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter

@@ -1,13 +1,12 @@
 package com.thishotel.service;
 
-import com.thishotel.dto.RegisterRequestDTO;
+import com.thishotel.dto.request.RegisterRequestDTO;
 import com.thishotel.model.Client;
 import com.thishotel.model.User;
 import com.thishotel.repository.UserRepository;
 import com.thishotel.util.PasswordUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 

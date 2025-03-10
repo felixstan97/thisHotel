@@ -22,9 +22,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Room {
 
-
-//    VARIABLES
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
@@ -65,7 +62,6 @@ public class Room {
     private Boolean hasTerrace = false;
 
 
-    // Metodo per ottenere il numero massimo di persone consentite per la stanza
     public int calculateMaxOccupancy() {
         return roomType.getMaxOccupancy();
     }

@@ -22,9 +22,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public abstract class User {
 
-
-//    VARIABLES
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
