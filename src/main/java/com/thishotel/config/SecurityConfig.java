@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -36,8 +38,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/rooms").permitAll() // API pubbliche
+                        .requestMatchers("/api/auth/**").permitAll() // API pubbliche
                         .requestMatchers(HttpMethod.POST,"/api/admin/register").permitAll()  // Permetti la registrazione dell'admin
+                        .requestMatchers("/api/admin/rooms/**").hasAnyRole("ADMIN", "RECEPTIONIST", "MANAGER")
                         .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
                         .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER")

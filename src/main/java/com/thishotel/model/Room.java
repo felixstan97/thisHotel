@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,11 +29,16 @@ public class Room {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private RoomType roomType;  // Enum per il tipo di stanza (SINGLE, DOUBLE, TRIPLE, ecc.)
+    @Column(unique = true)
+    private String roomNumber;
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    private RoomType roomType;  // (SINGLE, DOUBLE, TRIPLE, ecc.)
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Size(min = 1, message = "At least one bed type is required")
     @ElementCollection(targetClass = BedType.class)
     @CollectionTable(name = "room_beds", joinColumns = @JoinColumn(name = "room_id"))
     @Column(name = "bed_type")
@@ -43,7 +49,7 @@ public class Room {
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
-    private Boolean isDisabledFriendly = false; // Accessibilità per disabili
+    private Boolean isDisabledFriendly = false;
 
     @NotNull
     @Min(0)
@@ -52,10 +58,10 @@ public class Room {
     private Boolean isSuite = false;
 
     @Enumerated(EnumType.STRING)
-    private RoomStatus roomStatus; // Stato della stanza (AVAILABLE, OCCUPIED, CLEANING, UNDER_MAINTENANCE, TO_CLEAN)
+    private RoomStatus roomStatus = RoomStatus.AVAILABLE;  // (AVAILABLE, OCCUPIED, CLEANING, UNDER_MAINTENANCE, TO_CLEAN)
 
     @Enumerated(EnumType.STRING)
-    private RoomView roomView; // Tipo di vista (SEA, MOUNTAIN, LAKE, CITY, GARDEN, NO_VIEW)
+    private RoomView roomView = RoomView.NO_VIEW; // (SEA, MOUNTAIN, LAKE, CITY, GARDEN, NO_VIEW)
 
     private Boolean hasBalcony = false;
 

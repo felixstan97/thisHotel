@@ -5,31 +5,31 @@ import com.thishotel.exception.EmailAlreadyExistsException;
 import com.thishotel.mapper.UserMapper;
 import com.thishotel.model.Receptionist;
 import com.thishotel.repository.ReceptionistRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.thishotel.validation.UserValidationService;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReceptionistService {
 
-    private ReceptionistRepository receptionistRepository;
-    private UserMapper userMapper;
-
-    public ReceptionistService(ReceptionistRepository receptionistRepository, UserMapper userMapper) {
-        this.receptionistRepository = receptionistRepository;
-        this.userMapper = userMapper;
-    }
+    private final ReceptionistRepository receptionistRepository;
+    private final UserValidationService userValidationService;
+    private final UserMapper userMapper;
 
     @Transactional
-    public Receptionist registerReceptionist(RegisterRequestDTO registerRequestDTO) {
-        Optional<Receptionist> existingReceptionist = receptionistRepository.findByEmail(registerRequestDTO.getEmail());
+    public Receptionist registerReceptionist(RegisterRequestDTO dto) {
+        userValidationService.validateRegistration(dto);
 
-        if (existingReceptionist.isPresent())
-            throw new EmailAlreadyExistsException(registerRequestDTO.getEmail(), 1001);
+        Optional<Receptionist> existingReceptionist = receptionistRepository.findByEmail(dto.getEmail());
+        if (existingReceptionist.isPresent()) {
+            throw new EmailAlreadyExistsException(dto.getEmail(), 1001);
+        }
 
-        Receptionist newReceptionist = userMapper.toReceptionist(registerRequestDTO);
+        Receptionist newReceptionist = userMapper.toReceptionist(dto);
         return receptionistRepository.save(newReceptionist);
     }
 

@@ -17,6 +17,14 @@ public class ApiResponseDTO <T>{
         this.errorCode = null;
     }
 
+    //Success + message
+    public ApiResponseDTO(T data, String message) {
+        this.status = "success";
+        this.data = data;
+        this.message = message;
+        this.errorCode = null;
+    }
+
     //Error
     public ApiResponseDTO(String message, Integer errorCode) {
         this.status = "error";
