@@ -57,3 +57,6 @@ public class StaffController {
     }
 
 }
+
+//  TODO: 1) getListShiftEqualsToBeAssigned
+//  TODO: 2) setShift

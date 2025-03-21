@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/rooms/**").hasAnyRole("ADMIN", "RECEPTIONIST", "MANAGER")
                         .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
                         .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER")
+                        .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER","ADMIN")
                         .requestMatchers("/api/reports/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/api/users/**").hasRole("ADMIN") // Solo gli admin possono gestire utenti
                         .anyRequest().authenticated()

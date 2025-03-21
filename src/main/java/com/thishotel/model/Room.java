@@ -67,9 +67,11 @@ public class Room {
 
     private Boolean hasTerrace = false;
 
+    private Long cleanerId;
 
     public int calculateMaxOccupancy() {
         return roomType.getMaxOccupancy();
     }
+
 
 }

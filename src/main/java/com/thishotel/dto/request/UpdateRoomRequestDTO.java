@@ -1,25 +1,22 @@
-package com.thishotel.dto.response;
+package com.thishotel.dto.request;
 
 import com.thishotel.enums.BedType;
 import com.thishotel.enums.RoomStatus;
 import com.thishotel.enums.RoomType;
 import com.thishotel.enums.RoomView;
-import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-@Builder
-public class RoomDetailResponseDTO {
-    private Long id;
+public class UpdateRoomRequestDTO {
     private String roomNumber;
     private RoomType roomType;
     private List<BedType> bedTypes;
     private BigDecimal price;
     private Boolean isDisabledFriendly;
-    private int floor;
+    private Integer floor;
     private Boolean isSuite;
     private RoomStatus roomStatus;
     private RoomView roomView;

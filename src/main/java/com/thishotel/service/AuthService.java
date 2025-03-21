@@ -40,7 +40,9 @@ public class AuthService {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password);
             authenticationManager.authenticate(authToken);
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            return jwtUtil.generateToken(userDetails.getUsername());
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new IllegalStateException("User not found after authentication"));
+            return jwtUtil.generateToken(userDetails.getUsername(), user.getId());
         } catch (AuthenticationException e) {
             throw new AuthenticationFailedException("Invalid email or password.",1006);
         }
@@ -71,7 +73,7 @@ public class AuthService {
         userValidationService.validatePasswordsMatch(dto);
 
         User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new IllegalStateException("User not found alfter token validation"));
+                .orElseThrow(() -> new IllegalStateException("User not found after token validation"));
         user.setPassword(PasswordUtil.encodePassword(dto.getNewPassword()));
         userRepository.save(user);
         tokenRepository.delete(resetToken);

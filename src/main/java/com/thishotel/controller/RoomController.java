@@ -1,6 +1,7 @@
 package com.thishotel.controller;
 
 import com.thishotel.dto.request.CreateRoomRequestDTO;
+import com.thishotel.dto.request.UpdateRoomRequestDTO;
 import com.thishotel.dto.response.ApiResponseDTO;
 import com.thishotel.dto.response.RoomDetailResponseDTO;
 import com.thishotel.dto.response.RoomResponseDTO;
@@ -31,7 +32,8 @@ public class RoomController {
     public ResponseEntity<ApiResponseDTO<RoomResponseDTO>> createRoom(@Valid @RequestBody CreateRoomRequestDTO createRoomRequestDTO) {
         Room room = roomService.createRoom(createRoomRequestDTO);
         RoomResponseDTO roomDTO = roomMapper.toRoomResponseDTO(room);
-        ApiResponseDTO<RoomResponseDTO> response = new ApiResponseDTO<>(roomDTO, "Room nr: '" + room.getRoomNumber() + "' created successfully");
+        String message = "Room nr: '" + room.getRoomNumber() + "' created successfully";
+        ApiResponseDTO<RoomResponseDTO> response = new ApiResponseDTO<>(roomDTO, message);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -49,7 +51,22 @@ public class RoomController {
         Room room = roomService.getRoomById(id);
         RoomDetailResponseDTO roomResponseDTO = roomMapper.toRoomDetailResponseDTO(room);
         String message = "Room retrieved successfully.";
-        ApiResponseDTO responseDTO = new ApiResponseDTO<>(roomResponseDTO, message);
+        ApiResponseDTO<RoomDetailResponseDTO> responseDTO = new ApiResponseDTO<>(roomResponseDTO, message);
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<RoomDetailResponseDTO>> updateRoom(@PathVariable Long id,
+                                                                            @Valid @RequestBody UpdateRoomRequestDTO updateRoomRequestDTO) {
+        Room updatedRoom = roomService.updateRoom(id, updateRoomRequestDTO);
+        String message = "Room nr: '" + updatedRoom.getRoomNumber() + "' updated succesfully";
+        RoomDetailResponseDTO roomResponseDTO = roomMapper.toRoomDetailResponseDTO(updatedRoom);
+        ApiResponseDTO responseDTO = new ApiResponseDTO(roomResponseDTO, message);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+
+
 }
+

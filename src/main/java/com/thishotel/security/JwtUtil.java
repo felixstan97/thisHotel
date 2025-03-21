@@ -3,7 +3,6 @@ package com.thishotel.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +19,10 @@ public class JwtUtil {
     private long EXPIRATION_TIME;
 
 
-    public String generateToken(String email){
+    public String generateToken(String email, Long id){
         return Jwts.builder()
                 .setSubject(email)
+                .claim("id", id)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -32,6 +32,10 @@ public class JwtUtil {
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Long extractId(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
     }
 
     public Date extractExpiration(String token) {
