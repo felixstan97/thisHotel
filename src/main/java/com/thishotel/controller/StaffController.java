@@ -17,6 +17,10 @@ import com.thishotel.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -70,6 +74,20 @@ public class StaffController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>(responseDto,message));
     }
 
+    @GetMapping("/paginated")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<PagedModel<UserResponseDto>>> getAllStaffPaginated(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = userService.getUsersPaginated(request, pageable);
+        Page<UserResponseDto> responsePage = userPage.map(userMapper::toResponseDto);
+        PagedModel<UserResponseDto> responseDto = new PagedModel<>(responsePage);
+        String message = responsePage.isEmpty() ? "No other staff members found." : "Users retrived successfully.";
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>(responseDto, message));
+    }
+
     @GetMapping("/shift-to-assign")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponseDTO<List<UserResponseDto>>> getStaffWithShiftToAssign() {
@@ -98,4 +116,6 @@ public class StaffController {
 
 }
 
-//  TODO: 3) -> ha senso mettere un individualBadgeCode o qualcosa del genere da mostrare nella lista dei dipendenti
+// todo 1-> softDelete user (switch)
+// todo 2-> getSoftDeletedUser
+// todo 3-> for staff, add in responseDTO shift (getStaff, setShift, ...)

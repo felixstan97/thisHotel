@@ -14,6 +14,8 @@ import com.thishotel.util.ServiceUtil;
 import com.thishotel.validation.UserValidationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +43,10 @@ public class UserService {
         return users.stream().filter(user -> !user.getId().equals(adminId)).toList();
     }
 
+    public Page<User> getUsersPaginated(HttpServletRequest request, Pageable pageable) {
+        Long adminId = getUserIdFromRequest(request);
+        return userRepository.findAllExcludingAdmin(adminId, pageable);
+    }
 
     public List<User> getUserWithShiftToAssign() {
         return userRepository.findAllStaffWithShiftToBeAssigned();
@@ -87,7 +93,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> assignShiftsToStaff(List<AssignShiftRequestDTO> requestDto) {
+    public void assignShiftsToStaff(List<AssignShiftRequestDTO> requestDto) {
         List<User> users = requestDto.stream().map(dto -> {
             User user = userRepository.findById(dto.getId())
                     .orElseThrow(() -> new UserNotFoundException("User with id: '" + dto.getId()+ "' not found.", 1020));
@@ -97,7 +103,7 @@ public class UserService {
             setShift(user, dto.getShift());
             return user;
         }).toList();
-        return userRepository.saveAll(users);
+        userRepository.saveAll(users);
     }
 
     private void setShift (User user, Shift shift) {

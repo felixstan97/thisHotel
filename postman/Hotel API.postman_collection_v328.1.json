@@ -49,6 +49,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Login Admin Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// const response = pm.response.json();\r",
+									"// pm.collectionVariables.set(\"token\", response.token);\r",
+									"\r",
+									"pm.collectionVariables.set(\"token\", pm.response.json().data);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@admin.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -923,6 +973,405 @@
 								"api",
 								"users",
 								"shifts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SetShiftBackToASSIGN",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"2\",\r\n    \"shift\":\"TO_BE_ASSIGNED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/shift",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"shift"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetUserPaginated",
+			"item": [
+				{
+					"name": "Register RECEPTIONIST",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Receptionista\",\r\n    \"lastName\":\"Rampante\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1430-02-23\",\r\n    \"email\":\"receptionist@receptionist.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-receptionist",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-receptionist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register RECEPTIONIST1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Receptionista\",\r\n    \"lastName\":\"Rampante\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1430-02-23\",\r\n    \"email\":\"receptionist1@receptionist.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-receptionist",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-receptionist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register RECEPTIONIST2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Receptionista\",\r\n    \"lastName\":\"Rampante\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1430-02-23\",\r\n    \"email\":\"receptionist2@receptionist.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-receptionist",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-receptionist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register MANAGER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Manager\",\r\n    \"lastName\":\"Salealei\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"manager@manager.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-manager",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-manager"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register MANAGER1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Manager\",\r\n    \"lastName\":\"Salealei\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"manager1@manager.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-manager",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-manager"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register MANAGER2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Manager\",\r\n    \"lastName\":\"Salealei\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"manager2@manager.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-manager",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-manager"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register CLEANER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Sanjey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"Sanjey@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-cleaner",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-cleaner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register CLEANER1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Sanjey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"Sanjey1@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-cleaner",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-cleaner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register CLEANER2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Sanjey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"Sanjey2@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-cleaner",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-cleaner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register CLEANER3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Sanjey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"Sanjey3@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-cleaner",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-cleaner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register CLEANER4",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Sanjey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"Sanjey4@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register-cleaner",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register-cleaner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getStaffPaginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/paginated?page=0&size=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"paginated"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getStaffPaginatedEmpty",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/paginated?page=3&size=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"paginated"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
 							]
 						}
 					},

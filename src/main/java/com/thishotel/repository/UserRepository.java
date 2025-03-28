@@ -1,8 +1,11 @@
 package com.thishotel.repository;
 
 import com.thishotel.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM users WHERE user_table IN ('MANAGER', 'RECEPTIONIST', 'CLEANER') AND shift = 'TO_BE_ASSIGNED'", nativeQuery = true)
     List<User> findAllStaffWithShiftToBeAssigned();
+
+    Page<User> findAll(Pageable pageable);
+
+    @Query(value = "SELECT * FROM users WHERE id != :adminId AND deleted_at IS NULL ORDER BY id", nativeQuery = true)
+    Page<User> findAllExcludingAdmin(@Param("adminId") Long adminId, Pageable pageable);
 }
