@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "051a449a-19d9-440b-be30-281fec1d0837",
+		"_postman_id": "dd675728-d7ca-451d-80a0-048fa3726f34",
 		"name": "Hotel API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -70,15 +70,42 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/admin/staff/register-receptionist",
+							"raw": "{{baseUrl}}/api/users/register-receptionist",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"admin",
-								"staff",
+								"users",
 								"register-receptionist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SelfRegisterClient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Client\",\r\n    \"lastName\":\"Gates\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1430-02-23\",\r\n    \"email\":\"gates@client.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/client/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"client",
+								"register"
 							]
 						}
 					},
@@ -99,14 +126,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/admin/staff/register-manager",
+							"raw": "{{baseUrl}}/api/users/register-manager",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"admin",
-								"staff",
+								"users",
 								"register-manager"
 							]
 						}
@@ -120,7 +146,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\":\"Sunsey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"sunsey@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"raw": "{\r\n    \"firstName\":\"Sanjey\",\r\n    \"lastName\":\"Jinfa\",\r\n    \"phoneNumber\":\"1234567890\",\r\n    \"dateOfBirth\":\"1400-02-23\",\r\n    \"email\":\"Sanjey@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -128,15 +154,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/admin/staff/register-cleaner",
+							"raw": "{{baseUrl}}/api/users/register-cleaner",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"admin",
-								"staff",
+								"users",
 								"register-cleaner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getStaff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
 							]
 						}
 					},
@@ -277,6 +320,107 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"email\":\"receptionist@receptionist.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Cleaner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// const response = pm.response.json();\r",
+									"// pm.collectionVariables.set(\"token\", response.token);\r",
+									"\r",
+									"pm.collectionVariables.set(\"token\", pm.response.json().data);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"sunsey@cleaner.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// const response = pm.response.json();\r",
+									"// pm.collectionVariables.set(\"token\", response.token);\r",
+									"\r",
+									"pm.collectionVariables.set(\"token\", pm.response.json().data);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"gates@client.com\",\r\n    \"password\":\"password123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -469,6 +613,35 @@
 					"response": []
 				},
 				{
+					"name": "UpdateStandardRoom",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomNumber\": \"101\",\r\n    \"roomType\": \"DOUBLE\",\r\n    \"bedTypes\": [\"MATRIMONIAL\"],\r\n    \"price\": 100.50,\r\n    \"floor\": 1,\r\n    \"isDisabledFriendly\": true,\r\n    \"hasBalcony\": false,\r\n    \"roomView\": \"LAKE\",\r\n    \"isSuite\": true,\r\n    \"hasTerrace\": true  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/rooms/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"rooms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "CreateSuiteRoom",
 					"request": {
 						"method": "POST",
@@ -536,6 +709,220 @@
 								"admin",
 								"rooms",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cleaning",
+			"item": [
+				{
+					"name": "SetRoomTO_CLEAN",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomNumber\": \"101\",\r\n    \"roomType\": \"DOUBLE\",\r\n    \"bedTypes\": [\"MATRIMONIAL\"],\r\n    \"price\": 100.50,\r\n    \"floor\": 1,\r\n    \"isDisabledFriendly\": true,\r\n    \"hasBalcony\": false,\r\n    \"roomView\": \"LAKE\",\r\n    \"isSuite\": true,\r\n    \"hasTerrace\": true,\r\n    \"roomStatus\": \"TO_CLEAN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/rooms/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"rooms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MyWork",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/cleaning-tasks/my-work",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cleaning-tasks",
+								"my-work"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SetRoomStatusCleaning",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomStatus\":\"CLEANING\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/cleaning-tasks/1/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cleaning-tasks",
+								"1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Personal Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Personal Profile Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Salvador\",\r\n    \"lastName\":\"Radavls\",\r\n    \"dateOfBirth\":\"1430-02-23\",\r\n    \"phoneNumber\":\"987654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "StaffShiftAssign",
+			"item": [
+				{
+					"name": "Get Staff To_Assign",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/shift-to-assign",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"shift-to-assign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SetShift",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"2\",\r\n    \"shift\":\"MORNING\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/shift",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"shift"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SetShiftsList",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n    \"id\":\"3\",\r\n    \"shift\":\"MORNING\"\r\n    },\r\n    {\r\n    \"id\":\"4\",\r\n    \"shift\":\"NIGHT\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/shifts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"shifts"
 							]
 						}
 					},

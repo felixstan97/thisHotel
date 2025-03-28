@@ -38,10 +38,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // API pubbliche
                         .requestMatchers(HttpMethod.POST,"/api/admin/register").permitAll()  // Permetti la registrazione dell'admin
-                        .requestMatchers("/api/admin/rooms/**").hasAnyRole("ADMIN", "RECEPTIONIST", "MANAGER")
-                        .requestMatchers("/api/bookings/**").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll() // API pubbliche
+                        .requestMatchers("/api/client/register").permitAll()  //Client OPS
+                        .requestMatchers("/api/admin/rooms/**").hasAnyRole("RECEPTIONIST", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/bookings/**", "api/profile/").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
                         .requestMatchers("/api/employees/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/api/cleaning-tasks/**").hasAnyRole("CLEANER", "MANAGER","ADMIN")
                         .requestMatchers("/api/reports/**").hasAnyRole("MANAGER", "ADMIN")
@@ -51,7 +52,7 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
-//         Aggiunta del filtro JWT prima dell'UsernamePasswordAuthenticationFilter
+//         JWT Filter
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

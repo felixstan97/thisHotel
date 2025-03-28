@@ -1,11 +1,11 @@
 package com.thishotel.validation;
 
-import com.thishotel.dto.request.CreateRoomRequestDTO;
 import com.thishotel.dto.request.RegisterRequestDTO;
 import com.thishotel.dto.request.ResetPasswordRequestDTO;
 import com.thishotel.exception.InvalidInputException;
 import com.thishotel.exception.InvalidTokenException;
-import com.thishotel.model.PasswordResetToken;
+import com.thishotel.model.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,6 +39,12 @@ public class UserValidationService {
         }
     }
 
+    public void validateEmailNotAlreadyExists(boolean alreadyExists) {
+        if (alreadyExists) {
+            throw new IllegalArgumentException("Email already in use.");
+        }
+    }
+
     public void validateResetToken(PasswordResetToken resetToken, String email) {
         if (resetToken == null || resetToken.isExpired() || !resetToken.getEmail().equals(email)) {
             throw new InvalidTokenException("Invalid or expired token.", 1004);
@@ -48,6 +54,18 @@ public class UserValidationService {
     public void validatePasswordsMatch(ResetPasswordRequestDTO dto) {
         if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
             throw new InvalidInputException("Passwords do not match.", 1005);
+        }
+    }
+
+    public void validateAccessPermission(Long loggedId, Long id) {
+        if (!loggedId.equals(id)) {
+            throw new AccessDeniedException("You can only access your own profile.");
+        }
+    }
+
+    public void validateShiftAssignement(User user, Long id) {
+        if (!(user instanceof Manager || user instanceof Receptionist || user instanceof Cleaner)) {
+            throw new IllegalArgumentException("User: '" + id + "' dose not support shift assignement.");
         }
     }
 
