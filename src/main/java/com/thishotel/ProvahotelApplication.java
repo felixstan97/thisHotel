@@ -11,7 +11,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 public class ProvahotelApplication {
 
 	public static void main(String[] args) {
-		EnvUtil.setEnv();
+		EnvUtil.setEnv2();
 		SpringApplication.run(ProvahotelApplication.class, args);
 	}
 
