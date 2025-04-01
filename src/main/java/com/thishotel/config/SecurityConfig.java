@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,"/api/admin/register").permitAll()  // Permetti la registrazione dell'admin
-                        .requestMatchers("/api/auth/**").permitAll() // API pubbliche
+                        .requestMatchers("/api/auth/**","/test/status").permitAll() // API pubbliche
                         .requestMatchers("/api/client/register").permitAll()  //Client OPS
                         .requestMatchers("/api/admin/rooms/**").hasAnyRole("RECEPTIONIST", "MANAGER", "ADMIN")
                         .requestMatchers("/api/bookings/**", "api/profile/").hasAnyRole("CLIENT", "RECEPTIONIST", "MANAGER", "ADMIN")
