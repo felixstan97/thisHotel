@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thishotel</groupId>
-	<artifactId>provahotel</artifactId>
+	<artifactId>ThiHotel</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Hotel Booking</name>
+	<name>Hotel Booking System</name>
 	<description>Hotel Booking System Backend</description>
 	<url/>
 	<licenses>
@@ -90,6 +90,11 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>1.5.5.Final</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 	</dependencies>
 
