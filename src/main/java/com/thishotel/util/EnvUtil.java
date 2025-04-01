@@ -30,8 +30,8 @@ public class EnvUtil {
         String passwordKey = env.equals("aws") ? "DB_PASSWORD" : "DB_PASSWORD_LOCAL";
 
         String dbUrl = dotenv.get(urlKey, System.getenv(urlKey));
-        String dbUsername = dotenv.get(urlKey, System.getenv(usernameKey));
-        String dbPassword = dotenv.get(urlKey, System.getenv(passwordKey));
+        String dbUsername = dotenv.get(usernameKey, System.getenv(usernameKey));
+        String dbPassword = dotenv.get(passwordKey, System.getenv(passwordKey));
 
         System.setProperty("spring.datasource.url", dbUrl);
         System.setProperty("spring.datasource.username", dbUsername);
