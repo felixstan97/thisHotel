@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -68,6 +71,21 @@ public class SecurityConfig {
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+
+    // Aggiunta configurazione CORS
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true); // Permette cookie o auth headers
+        config.addAllowedOrigin("http://localhost:3000"); // Consenti il frontend locale
+        config.addAllowedHeader("*"); // Consenti tutti gli header
+        config.addAllowedMethod("*"); // Consenti tutti i metodi (GET, POST, ecc.)
+        source.registerCorsConfiguration("/**", config); // Applica a tutti gli endpoint
+        return new CorsFilter(source);
+    }
+
 
 }
 
