@@ -2,6 +2,7 @@ package com.thishotel.validation;
 
 import com.thishotel.dto.request.RegisterRequestDTO;
 import com.thishotel.dto.request.ResetPasswordRequestDTO;
+import com.thishotel.exception.EmailAlreadyExistsException;
 import com.thishotel.exception.InvalidInputException;
 import com.thishotel.exception.InvalidTokenException;
 import com.thishotel.model.*;
@@ -39,10 +40,8 @@ public class UserValidationService {
         }
     }
 
-    public void validateEmailNotAlreadyExists(boolean alreadyExists) {
-        if (alreadyExists) {
-            throw new IllegalArgumentException("Email already in use.");
-        }
+    public void validateEmailNotAlreadyExists(String email, int errorCode) {
+        throw new EmailAlreadyExistsException(email, errorCode);
     }
 
     public void validateResetToken(PasswordResetToken resetToken, String email) {

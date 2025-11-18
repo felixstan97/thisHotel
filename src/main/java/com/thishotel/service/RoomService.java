@@ -102,7 +102,7 @@ public class RoomService {
             String token = authHeader.substring(7);
             return jwtUtil.extractId(token);
         }
-        throw new IllegalStateException("No valid JWT token  found in request");
+        throw new IllegalStateException("No valid JWT token found in request");
     }
 
     public List<RoomResponseDTO> getCleanerWork(Long cleanerId) {

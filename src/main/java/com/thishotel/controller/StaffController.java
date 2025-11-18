@@ -4,6 +4,7 @@ import com.thishotel.dto.request.AssignShiftRequestDTO;
 import com.thishotel.dto.request.RegisterRequestDTO;
 import com.thishotel.dto.response.ApiResponseDTO;
 import com.thishotel.dto.response.RegistrationResponseDTO;
+import com.thishotel.dto.response.UserDetailResponseDTO;
 import com.thishotel.dto.response.UserResponseDto;
 import com.thishotel.mapper.UserMapper;
 import com.thishotel.model.Cleaner;
@@ -72,6 +73,15 @@ public class StaffController {
         List<UserResponseDto> responseDto = userMapper.toResponseDto(userList);
         String message = responseDto.isEmpty() ? "No other staff members found." : "Users retrieved successfully.";
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>(responseDto,message));
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<UserDetailResponseDTO>> getStaffMemberById(@PathVariable Long id) {
+        User user = userService.getStaffUser(id);
+        UserDetailResponseDTO userResponseDto = userMapper.toUserDetailResponseDTO(user);
+        String message = "Staff member retrive successfully";
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO<>(userResponseDto, message));
     }
 
     @GetMapping("/paginated")

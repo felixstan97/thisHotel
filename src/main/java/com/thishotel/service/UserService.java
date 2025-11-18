@@ -32,7 +32,23 @@ public class UserService {
     private final ServiceUtil serviceUtil;
     private final JwtUtil jwtUtil;
 
+    private User ensureUserExists(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found.", 1020));
+    }
+
+    public User getStaffUser(Long id){
+        return ensureUserExists(id);
+    }
+
     public List<User> getUsers(HttpServletRequest request){
+        // TODO [User Filtering]:
+        //  Required changes:
+        //   - Add filtering by user type (staff vs client)
+        //   - Return only active users
+        //   - Explicitly exclude ADMIN type users
+        //  Reason: Current implementation returns all users without restrictions.
+
         List<User> users = userRepository.findAll();
         if (users.isEmpty()) {
             throw new IllegalStateException("No users found.");
@@ -57,11 +73,10 @@ public class UserService {
         Long loggedInUserId = getUserIdFromRequest(request);
         userValidationService.validateAccessPermission(loggedInUserId, id);
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found.", 1020));
+        User user = ensureUserExists(id);
 
         if (dto.getEmail() != null && !dto.getEmail().equals(user.getEmail())) {
-            userValidationService.validateEmailNotAlreadyExists(userRepository.existsByEmail(dto.getEmail()));
+            ensureEmailNotAlreadyExists(dto.getEmail());
         }
 
         serviceUtil.updateIfNotNull(dto.getEmail(), user::setEmail);
@@ -76,15 +91,12 @@ public class UserService {
     public User getUserProfile(Long id, HttpServletRequest request) {
         Long loggedInUserId = getUserIdFromRequest(request);
         userValidationService.validateAccessPermission(loggedInUserId, id);
-
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found", 1020));
+        return ensureUserExists(id);
     }
 
     @Transactional
     public User assignShift(Long id, Shift shift) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found.", 1020));
+        User user = ensureUserExists(id);
 
         userValidationService.validateShiftAssignement(user, id);
 
@@ -99,7 +111,6 @@ public class UserService {
                     .orElseThrow(() -> new UserNotFoundException("User with id: '" + dto.getId()+ "' not found.", 1020));
 
             userValidationService.validateShiftAssignement(user, dto.getId());
-
             setShift(user, dto.getShift());
             return user;
         }).toList();
@@ -125,5 +136,9 @@ public class UserService {
         throw new IllegalStateException("No valid token found in request.");
     }
 
-
+    public void ensureEmailNotAlreadyExists(String email) {
+        if(userRepository.existsByEmail(email)){
+            userValidationService.validateEmailNotAlreadyExists(email,1001);
+        }
+    }
 }
