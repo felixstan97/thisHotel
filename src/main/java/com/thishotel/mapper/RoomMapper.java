@@ -14,6 +14,8 @@ public interface RoomMapper {
     @Mapping(target = "isSuite", defaultValue = "false")
     @Mapping(target = "hasBalcony", defaultValue = "false")
     @Mapping(target = "hasTerrace", defaultValue = "false")
+    @Mapping(target = "roomStatus", ignore = true)
+    @Mapping(target = "cleanerId", ignore = true)
     Room toRoom(CreateRoomRequestDTO dto);
 
     RoomResponseDTO toRoomResponseDTO(Room room);

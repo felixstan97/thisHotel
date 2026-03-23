@@ -46,6 +46,7 @@ public interface UserMapper {
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "active", constant = "true")
     @Mapping(target = "shift", ignore = true)
+    @Mapping(target = "cleaningArea", ignore = true)
     Cleaner toCleaner(RegisterRequestDTO dto);
 
     @Mapping(target = "password", expression = "java(com.thishotel.util.PasswordUtil.encodePassword(dto.getPassword()))")
@@ -54,6 +55,7 @@ public interface UserMapper {
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "active", constant = "true")
+    @Mapping(target = "loyaltyCardCode", ignore = true)
     Client toClient(RegisterRequestDTO dto);
 
     @Mapping(target = "role", expression = "java(user.getClass().getSimpleName().toUpperCase())")
@@ -65,5 +67,6 @@ public interface UserMapper {
     List<UserResponseDto> toResponseDto(List<User> user);
 
     @Mapping(target = "role", expression = "java(user.getClass().getSimpleName().toUpperCase())")
+    @Mapping(target = "loyaltyCardCode", ignore = true)
     UserDetailResponseDTO toUserDetailResponseDTO(User user);
 }

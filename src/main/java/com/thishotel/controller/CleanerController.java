@@ -38,7 +38,7 @@ public class CleanerController {
         Long cleanerId = roomService.getCleanerIdFromRequest(request);
         List<RoomResponseDTO> responseDTOS = roomService.getCleanerWork(cleanerId);
         String message = responseDTOS.isEmpty() ? "No rooms assigned or to clean found." : "Your work retrieved successfully";
-        ApiResponseDTO responseDTO = new ApiResponseDTO(responseDTOS, message);
+        ApiResponseDTO responseDTO = new ApiResponseDTO<>(responseDTOS, message);
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
